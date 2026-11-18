@@ -25,4 +25,26 @@ public class CategoriaService {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria no encontrada"));
     }
+
+    public CategoriaModel registrarCategoria(CategoriaModel cat) {
+        return categoriaRepository.save(cat);
+    }
+
+    public CategoriaModel modificarCategoria(Integer id,CategoriaModel cat) {
+        validarCategoria(cat);
+        CategoriaModel actual = unaCategoria(id);
+        actual.setNombre(cat.getNombre());
+        actual.setDescripcion(cat.getDescripcion());
+
+        return categoriaRepository.save(actual);
+    }
+
+    private void validarCategoria(CategoriaModel cat) {
+        if (cat == null || cat.getNombre() == null
+                || cat.getNombre().isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "El nombre de la categoría es obligatorio");
+        }
+        cat.setNombre(cat.getNombre().trim());
+    }
 }
