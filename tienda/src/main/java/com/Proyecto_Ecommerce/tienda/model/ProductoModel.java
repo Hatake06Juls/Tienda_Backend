@@ -38,6 +38,7 @@ public class ProductoModel {
     @Column(name = "badge_class")
     private String badgeClass;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String img;
     private String alt;
 }
